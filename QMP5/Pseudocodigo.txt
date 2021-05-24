@@ -1,0 +1,65 @@
+package domain.usuarios;
+
+public class Usuario{
+  List<Guardarropas> listaDeGuardarropas;
+  List<Modificacion> modificacionesPendientes;
+  List<Modificacion> modificacionesRealizadas;
+
+  List<Modificacion> verModificacionesPendientes(){
+    return modificacionesPendientes;
+  }
+  List<Modificacion> verModificacionesRealizadas(){
+    return modificacionesRealizadas;
+  }
+
+  void recibirSugerencia(Modificacion unaModificacion){
+    modificacionesPendientes.add(unaModificacion);
+  }
+
+  void realizarModificacion(Modificacion unaModificacion, Guardarropas unGuardarropas){
+    unaModificacion.aplicarEn(unGuardarropas);
+  }
+  void deshacerModificacion(Modificacion unaModificacion, Guardarropas unGuardarropas){
+    unaModificacion.deshacer(unGuardarropas);
+  }
+}
+
+public class Guardarropas{
+  List<Prenda> prendas;
+  list<Usuario> usuarios;
+
+  public void agregar(Prenda prenda){
+    prendas.add(prenda);
+  }
+  public void quitar(Prenda prenda){
+    prendas.remove(prenda);
+  }
+}
+
+public interface Modificacion{
+    Prenda prenda;
+    public void aplicarEn(Guardarropas guardarropas);
+    public void deshacer(Guardarropas guardarropas);
+}
+
+class QuitarPrenda implements  Modificacion{
+  Prenda prenda;
+  aplicarEn(Guardarropas guardarropas){
+    guardarropas.quitar(prenda);
+  }
+
+  deshacer(Guardarropas guardarropas){
+    guardarropas.agregar(prenda);
+  }
+}
+
+class AgregarPrenda implements  Modificacion{
+  Prenda prenda;
+  aplicarEn(Guardarropas guardarropas){
+    guardarropas.agregar(prenda);
+  }
+
+  deshacer(Guardarropas guardarropas){
+    guardarropas.quitar(prenda);
+  }
+}

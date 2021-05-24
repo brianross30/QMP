@@ -1,0 +1,169 @@
+@startuml
+
+Enum Trama {
+    LISA,
+    RAYADA,
+    etc
+}
+
+Enum Categoria {
+    PARTE_SUPERIOR
+    PARTE_INFERIOR
+    CALZADO
+    ACCESORIO
+}
+
+Enum Material {
+    ALGODON,
+    LANA,
+    etc
+}
+
+class TipoDePrenda {
+    Categoria categoria()
+}
+
+class Prenda {
+    Color colorPrimario
+    Color colorSecundario
+    Categoria categoria()
+}
+
+class Color {
+    int nivelRojo
+    int nivelAzul
+    int nivelVerde
+}
+
+class Borrador {
+   TipoDePrenda tipo
+   Material material
+   Color colorPrimario
+   Color colorSecundario
+   Trama trama
+   especificarTipo(TipoDePrenda)
+   especificarMaterial(Material)
+   especificarColorPrimario(ColorPrimario)
+   especificarColorSecundario(ColorSecundario)
+   especificarTrama(Trama)
+   crearPrenda()
+  
+}
+
+class Uniforme{
+Uniforme fabricar(Sastre)
+}
+
+interface Sastre{
+    fabricarParteSuperior()
+    fabricarParteInferior()
+    fabricarCalzado()
+}
+
+class SastreSanJuan{
+}
+
+class SastreJohnson{
+}
+
+class Atuendo {
+    List<Prenda> prendas
+    agregarPrenda(Prenda)
+}
+
+enum Humedad{
+}
+
+class EstadoDelTiempo{
+   int temperatura
+   Humedad humedad
+}
+
+class AccuWeatherAPI{
+    List<Map<String, Object>> getWeather(String ciudad)
+}
+
+class ServicioMetereologicoAccuWeather{
+   EstadoDelTiempo obtenerClima()
+}
+
+
+interface ServicioMetereologico{
+   EstadoDelTiempo obtenerClima()
+}
+
+class Guardarropas{
+    List<Prenda> prendas
+    list<Usuario> usuarios
+    agregar(Prenda)
+    quitar(Prenda)
+    generarPrenda(Prenda)
+}
+
+class Usuario{
+    List<Guardarropas> listaDeGuardarropas
+    List<Modificacion> modificacionesPendientes
+    List<Modificacion> modificacionesRealizadas
+    Borrador borrador
+    obtenerClima()
+    generarSugerencia()
+    List<Modificacion> verModificacionesPendientes()
+    List<Modificacion> verModificacionesRealizadas()
+    recibirSugerencia(Modificacion)
+    realizarModificacion(Modificacion, Guardarropas)
+    deshacerModificacion(Modificacion, Guardarropas)
+    
+}
+
+Interface Modificacion{
+    Prenda prenda
+    aplicarEn(Guardarropas)
+}
+
+class QuitarPrenda{
+    Prenda prenda
+    aplicarEn(Guardarropas)
+    deshacer(Guardarropas)
+}
+
+class AgregarPrenda{
+    Prenda prenda
+    aplicarEn(Guardarropas)
+    deshacer(Guardarropas)
+}
+
+
+Prenda -> Color
+Prenda -> Color
+Prenda -> Trama
+Prenda -> Material
+Prenda -> TipoDePrenda
+TipoDePrenda -> Categoria
+
+Borrador ..> Prenda 
+Usuario -> Borrador
+
+Atuendo -->"*" Prenda
+Guardarropas ..> Atuendo
+Guardarropas -->"*" Prenda
+Guardarropas -> "*" Usuario
+Usuario -> "*" Guardarropas
+
+Uniforme -->"*" Prenda
+Uniforme ..> Sastre
+SastreSanJuan -|> Sastre
+SastreJohnson -|> Sastre
+
+EstadoDelTiempo -> Humedad
+ServicioMetereologicoAccuWeather -> AccuWeatherAPI
+ServicioMetereologico ..> EstadoDelTiempo
+ServicioMetereologicoAccuWeather ..|> ServicioMetereologico
+Usuario ..> ServicioMetereologico
+
+QuitarPrenda ..|> Modificacion
+AgregarPrenda ..|> Modificacion
+Usuario -> "*" Modificacion
+Modificacion ..> Guardarropas
+
+
+@enduml
