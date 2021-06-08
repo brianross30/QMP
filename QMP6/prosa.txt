@@ -1,0 +1,10 @@
+cada dia el empleado corre su metodo dispararSugerencias()
+que por cada usuario en la lista de usuarios le aplica su metodo generarSugerencia(), que lo hace de forma personalizada por cada usuario. Los detalles algortimicos de este metodo aun no fueron dados
+
+cuando el empleado quiere actualizar las alertas metereologicas ejecuta su metodo actualizarAlertas, que le manda actualizarAlertas al ServicioMetereologico implementado, que es ServicioMetereologicoAccuWeather que a su vez le manda getAlerts a AccuWeatherAPI y se guarda su resultado en una lista de alertas
+Cuando el usuario quiere consultar las alertas meterelogicas la interfaz de usuario va a correr el metodo obtenerAlertas del ServicioMetereologico y las va a mostrar
+
+el empleado al hacer actualizarAlertas, compara con la lista anterior y si hay nuevas alertas ejecuta dispararSugerencias, y el metodo notificarAlertas, que por cada usuario hace recibirNotificacion, y es ese metodo el encargado de notificar a su respectivo usuario utilizando en mailing o la notificacion de escritorio segun corresponda. Esto lo realiza utilizando la lista de AlertaObserver que tiene el usuario. A cada uno le aplica notificarAlerta() y cada clase implementara ese metodo a su manera. Se pueden agregar y quitar estos observers por usuario, utilizando agregarMetodoDeNotificacion(AlertaObserver)
+ y quitarMetodoDeNotificacion(AlertaObserver)
+A su vez segun la alerta espcifica si tiene que llevar paraguas o no salir en auto
+

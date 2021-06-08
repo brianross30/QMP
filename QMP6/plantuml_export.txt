@@ -1,0 +1,216 @@
+@startuml
+
+Enum Trama {
+    LISA,
+    RAYADA,
+    etc
+}
+
+Enum Categoria {
+    PARTE_SUPERIOR
+    PARTE_INFERIOR
+    CALZADO
+    ACCESORIO
+}
+
+Enum Material {
+    ALGODON,
+    LANA,
+    etc
+}
+
+class TipoDePrenda {
+    Categoria categoria()
+}
+
+class Prenda {
+    Color colorPrimario
+    Color colorSecundario
+    Categoria categoria()
+}
+
+class Color {
+    int nivelRojo
+    int nivelAzul
+    int nivelVerde
+}
+
+class Borrador {
+   TipoDePrenda tipo
+   Material material
+   Color colorPrimario
+   Color colorSecundario
+   Trama trama
+   especificarTipo(TipoDePrenda)
+   especificarMaterial(Material)
+   especificarColorPrimario(ColorPrimario)
+   especificarColorSecundario(ColorSecundario)
+   especificarTrama(Trama)
+   crearPrenda()
+  
+}
+
+class Uniforme{
+Uniforme fabricar(Sastre)
+}
+
+interface Sastre{
+    fabricarParteSuperior()
+    fabricarParteInferior()
+    fabricarCalzado()
+}
+
+class SastreSanJuan{
+}
+
+class SastreJohnson{
+}
+
+class Atuendo {
+    List<Prenda> prendas
+    agregarPrenda(Prenda)
+}
+
+enum Humedad{
+}
+
+class EstadoDelTiempo{
+   int temperatura
+   Humedad humedad
+}
+
+class AccuWeatherAPI{
+    List<Map<String, Object>> getWeather(String ciudad)
+    Map<String, List<String>> getAlerts(String city)
+}
+
+class ServicioMetereologicoAccuWeather{
+   List<String> alertas
+   EstadoDelTiempo obtenerClima()
+   List<String> obtenerAlertas()
+   void actualizarAlertas()
+}
+
+
+interface ServicioMetereologico{
+   List<String> alertas
+   EstadoDelTiempo obtenerClima()
+   List<String> obtenerAlertas()
+   void actualizarAlertas()
+}
+
+class Guardarropas{
+    List<Prenda> prendas
+    list<Usuario> usuarios
+    agregar(Prenda)
+    quitar(Prenda)
+    generarPrenda(Prenda)
+}
+
+class Usuario{
+    List<Guardarropas> listaDeGuardarropas
+    List<Modificacion> modificacionesPendientes
+    List<Modificacion> modificacionesRealizadas
+    Borrador borrador
+    List<AlertaObserver> alertaObservers
+    obtenerClima()
+    generarSugerencia()
+    List<Modificacion> verModificacionesPendientes()
+    List<Modificacion> verModificacionesRealizadas()
+    recibirSugerencia(Modificacion)
+    realizarModificacion(Modificacion, Guardarropas)
+    deshacerModificacion(Modificacion, Guardarropas)
+    generarSugerencia(Atuendo)
+    obtenerAlertasMeteorologicas()
+    recibirNotificacion()
+    agregarMetodoDeNotificacion(AlertaObserver)
+    quitarMetodoDeNotificacion(AlertaObserver)
+}
+
+class Empleado{
+    List<Usuarios> usuarios
+    void dispararSugerencias()
+    void actualizarAlertas()
+    void notificarAlertas()
+}
+
+class Mailer{
+    MailSender mailSender
+    void notificarAlerta()
+}
+
+class Notifier{
+    NotificationService notificationService
+    void notificarAlerta()
+}
+
+Interface AlertaObserver{
+    void notificarAlerta()
+}
+
+Interface Modificacion{
+    Prenda prenda
+    aplicarEn(Guardarropas)
+}
+
+class QuitarPrenda{
+    Prenda prenda
+    aplicarEn(Guardarropas)
+    deshacer(Guardarropas)
+}
+
+class AgregarPrenda{
+    Prenda prenda
+    aplicarEn(Guardarropas)
+    deshacer(Guardarropas)
+}
+
+class MailSender{
+    send(address,message)
+}
+
+class NotificationService{
+    notify(text)
+}
+
+Prenda -> Color
+Prenda -> Color
+Prenda -> Trama
+Prenda -> Material
+Prenda -> TipoDePrenda
+TipoDePrenda -> Categoria
+
+Borrador ..> Prenda 
+Usuario -> Borrador
+
+Atuendo -->"*" Prenda
+Guardarropas ..> Atuendo
+Guardarropas -->"*" Prenda
+Guardarropas -> "*" Usuario
+Usuario -> "*" Guardarropas
+
+Uniforme -->"*" Prenda
+Uniforme ..> Sastre
+SastreSanJuan -|> Sastre
+SastreJohnson -|> Sastre
+
+EstadoDelTiempo -> Humedad
+ServicioMetereologicoAccuWeather -> AccuWeatherAPI
+ServicioMetereologico ..> EstadoDelTiempo
+ServicioMetereologicoAccuWeather ..|> ServicioMetereologico
+Usuario ..> ServicioMetereologico
+
+QuitarPrenda ..|> Modificacion
+AgregarPrenda ..|> Modificacion
+Usuario -> "*" Modificacion
+Modificacion ..> Guardarropas
+
+Empleado -> "*" Usuario
+Empleado ..> ServicioMetereologico
+Mailer ..|> AlertaObserver
+Notifier ..|> AlertaObserver
+Mailer -> MailSender
+Notifier -> NotificationService
+Usuario -> "*" AlertaObserver
+
+@enduml
